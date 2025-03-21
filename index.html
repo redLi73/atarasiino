@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クラブ＆バー</title>
+
+  <!-- フォント (Orbitron + Lato) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========== 共通スタイル ========== */
+    :root {
+      --club-bg: url('A_futuristic_nightclub_background_with_neon_pink_a.png');
+      --bar-bg: url('A_stylish_and_elegant_bar_background_with_neon_blu.png');
+      --accent-color-club: #FF00FF;  /* ネオンピンク */
+      --accent-color-bar: #FFD700;   /* ゴールド */
+      --text-color: #fff;
+      --bg-color: #000;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    /* ========== メインレイアウト (左右分割) ========== */
+    .container {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* クラブ側（左） */
+    .club {
+      flex: 1;
+      background: var(--club-bg) no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* バー側（右） */
+    .bar {
+      flex: 1;
+      background: var(--bar-bg) no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 共通エリア（中央） */
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40%;
+      min-width: 300px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    /* タイトル */
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    /* ダーツメーター */
+    .dart-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 20px auto;
+    }
+    #dart {
+      position: absolute;
+      width: 120px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      transform-origin: 50% 90%;
+      transition: transform 1s ease;
+    }
+
+    /* 予約ボタン */
+    .reserve-btn {
+      background: none;
+      color: var(--text-color);
+      border: 2px solid var(--text-color);
+      padding: 10px 30px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    .reserve-btn:hover {
+      box-shadow: 0 0 10px var(--accent-color-club);
+    }
+
+    /* 区切り線 */
+    .divider {
+      width: 80%;
+      margin: 20px auto;
+      border: 0.5px solid var(--text-color);
+    }
+
+    /* ゲーム・ランキング */
+    .game-section {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .ranking, .game-btn {
+      width: 45%;
+      padding: 15px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    /* ニュース */
+    .news {
+      margin: 20px 0;
+      padding: 10px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    /* ========== スマホ対応 ========== */
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .club, .bar {
+        flex: none;
+        height: 50vh;
+      }
+
+      .center-content {
+        width: 80%;
+        top: 55%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- クラブ (左) -->
+    <div class="club"></div>
+
+    <!-- バー (右) -->
+    <div class="bar"></div>
+
+    <!-- 共通エリア -->
+    <div class="center-content">
+      <h1>クラブ＆バー</h1>
+
+      <!-- 混雑度メーター -->
+      <div class="dart-container">
+        <img src="dart.png" id="dart" alt="混雑度">
+      </div>
+
+      <button class="reserve-btn">予約する</button>
+      <hr class="divider">
+
+      <!-- ランキング・ゲーム -->
+      <section class="game-section">
+        <div class="ranking">
+          <h2>ランキング</h2>
+          <ol>
+            <li>ユーザーA</li>
+            <li>ユーザーB</li>
+            <li>ユーザーC</li>
+          </ol>
+        </div>
+        <button class="game-btn">ゲーム</button>
+      </section>
+
+      <!-- ニュース -->
+      <section class="news">
+        <h2>ニュース</h2>
+        <p>新しいイベントがスタートします！</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // ダーツバレルの回転をランダムに
+    function setCrowdLevel() {
+      const dart = document.getElementById('dart');
+      const levels = [0, -45, 45];  // やや混雑(0°), 満員(-45°), 予約不要(45°)
+      const randomRotation = levels[Math.floor(Math.random() * levels.length)];
+      dart.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg)`;
+    }
+
+    setCrowdLevel();
+    setInterval(setCrowdLevel, 5000);
+  </script>
+
+</body>
+</html>
